@@ -1,0 +1,12 @@
+{
+  "name": "motogp-simulation",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.cjs",
+    "validate:seed": "node tests/validate-seed.cjs",
+    "audit:traffic": "node tests/audit-traffic.cjs"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs": "4.22.0"
+  }
+}

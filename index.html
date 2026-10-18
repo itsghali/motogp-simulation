@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MotoGP Simulation — Jerez</title>
+    <meta name="application-name" content="MotoGP Simulation" />
+    <meta name="description" content="Simulation pédagogique de pilotage autonome et d’évolution génétique sur un tracé inspiré de Jerez." />
+    <meta name="theme-color" content="#10151f" />
+    <link rel="stylesheet" href="style.css?v=20261016-avoidance4" />
+    <link rel="stylesheet" href="broadcast.css?v=20261017-workspace2" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+  </head>
+  <body>
+    <main>
+      <section id="canvas-container" aria-label="Simulation du circuit"></section>
+      <aside id="controls" aria-label="Contrôles d’apprentissage"></aside>
+    </main>
+    <script src="random.js?v=20261016-avoidance4"></script>
+    <script src="configuration.js?v=20261016-avoidance4"></script>
+    <script src="genome.js?v=20261016-avoidance4"></script>
+    <script src="scenario.js?v=20261016-avoidance4"></script>
+    <script src="circuit.js?v=20261017-crossedborders"></script>
+    <script src="steering.js?v=20261016-avoidance4"></script>
+    <script src="gpu-inference.js?v=20261016-avoidance4"></script>
+    <script src="fitness.js?v=20261016-avoidance4"></script>
+    <script src="genetic-algorithm.js?v=20261016-avoidance4"></script>
+    <script src="validation.js?v=20261016-avoidance4"></script>
+    <script src="model-storage.js?v=20261016-library-restore3"></script>
+    <script src="model-files.js?v=20261016-avoidance4"></script>
+    <script src="ray.js?v=20261016-avoidance4"></script>
+    <script src="boundary.js?v=20261016-avoidance4"></script>
+    <script src="vehicle.js?v=20261016-avoidance4"></script>
+    <script src="motorcycle-body.js?v=20261017-traffic-general1"></script>
+    <script src="motorcycle-prediction.js?v=20261017-prediction3"></script>
+    <script src="race-track-frame.js?v=20261017-track5"></script>
+    <script src="reference-steering.js?v=20261017-reference53"></script>
+    <script src="motorcycle-avoidance.js?v=20261017-traffic-general1"></script>
+    <script src="race-steering.js?v=20261017-auditmatrix"></script>
+    <script src="motorcycle.js?v=20261017-traffic-general1"></script>
+    <script src="simulation.js?v=20261016-avoidance4"></script>
+    <script src="ui.js?v=20261016-avoidance4"></script>
+    <script src="race-events.js?v=20261016-avoidance4"></script>
+    <script src="replay.js?v=20261016-avoidance4"></script>
+    <script src="race-analytics.js?v=20261016-avoidance4"></script>
+    <script src="rider-roster.js?v=20261016-avoidance4"></script>
+    <script src="drone-steering.js?v=20261016-avoidance4"></script>
+    <script src="Drone.js?v=20261016-avoidance4"></script>
+    <script src="Obstacle.js?v=20261016-wide-obstacle2"></script>
+    <script src="race-session.js?v=20261017-traffic-general1"></script>
+    <script src="engine-sound.js?v=20261016-avoidance4"></script>
+    <script src="audio-manager.js?v=20261016-avoidance4"></script>
+    <script src="commentary.js?v=20261016-avoidance4"></script>
+    <script src="camera-director.js?v=20261016-avoidance4"></script>
+    <script src="venue.js?v=20261016-avoidance4"></script>
+    <script src="replay-motorcycle.js?v=20261016-avoidance4"></script>
+    <script src="grand-prix-rules.js?v=20261017-width100"></script>
+    <script src="grand-prix.js?v=20261017-auditmatrix"></script>
+    <script src="sketch.js?v=20261016-library-restore3"></script>
+  </body>
+</html>
