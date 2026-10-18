@@ -1,6 +1,6 @@
 # MotoGP Simulation
 
-Simulation p5.js où une population de motos apprend à parcourir le Circuito de Jerez - Ángel Nieto. Le pilote ne reçoit ni trajectoire, ni centre de piste, ni position du prochain checkpoint. Ses entrées sont sept distances aux limites, sa vitesse et sa commande précédente.
+Simulation p5.js combinant trois approches : **algorithme génétique**, **évitement réactif d'obstacles** et **séparation/anticollision entre motos**. Une population apprend à parcourir le Circuito de Jerez - Ángel Nieto. Le pilote ne reçoit ni trajectoire, ni centre de piste, ni position du prochain checkpoint. Ses entrées sont sept distances aux limites, sa vitesse et sa commande précédente.
 
 ## Démonstration
 
@@ -10,6 +10,16 @@ Simulation p5.js où une population de motos apprend à parcourir le Circuito de
 ![MotoGP Simulation en mode entraînement sur le tracé de Jerez](docs/motogp-simulation.png)
 
 Documentation académique : [spécifications complètes](SPECIFICATIONS.md) et [problèmes rencontrés avec leurs solutions](PROBLEMES-ET-SOLUTIONS.md).
+
+## Algorithmes utilisés
+
+| Algorithme | Rôle | Origine |
+|---|---|---|
+| Algorithme génétique + réseau neuronal 9-12-2 | Faire évoluer les cerveaux selon progression, checkpoints, tours et pénalités | Contrôleur d'apprentissage de MotoGP Simulation |
+| Évitement d'obstacles | Anticiper avec des sondes futures, choisir un côté, contourner et freiner si nécessaire | Adapté de `5-3-PathFollowingComplex/vehicleAvoidance.js` |
+| Séparation / anticollision | Maintenir une distance entre motos, anticiper le contact et gérer la distance de suivi | Adapté de `5-3-PathFollowingComplex/motorcycleSteering.js` |
+
+Les deux comportements réactifs proviennent donc de l'exemple pédagogique **`5-3-PathFollowingComplex`**. Ils ont été adaptés au circuit, aux dimensions complètes des motos et au mode Grand Prix. Ils restent séparés du génome et de l'entraînement génétique : `reference-steering.js` contient leurs primitives, puis `race-steering.js` et `motorcycle-avoidance.js` composent les forces. La force finale reste limitée à `maxForce` et la locomotion reste déléguée à `Vehicle`.
 
 L'inférence neuronale de toute la population est batchée avec TensorFlow.js. Le navigateur demande WebGL haute performance et identifie la RTX 3070 comme configuration optimale. Un autre GPU WebGL reste accepté pour la démonstration publique ; sans WebGL, TensorFlow.js passe au CPU. p5.js, les capteurs géométriques, le GA, l'interface et l'orchestration restent exécutés sur le CPU.
 
@@ -37,6 +47,8 @@ Le contour est une simplification normalisée à 42 points du plan public, sans 
 - `venue.js`, `replay-motorcycle.js` : décor et reconstruction visuelle, héritant de `Vehicle`.
 - `genome.js` : réseau dense léger et sept traits de conduite.
 - `steering.js` : décision et force Reynolds limitée.
+- `reference-steering.js` : évitement et séparation adaptés de `5-3-PathFollowingComplex`.
+- `race-steering.js`, `motorcycle-avoidance.js` : composition des aides réactives du Grand Prix.
 - `gpu-inference.js` : tenseurs persistants et inférence batchée GPU WebGL.
 - `genetic-algorithm.js` : tournoi, élitisme, croisement, mutation.
 - `fitness.js` : récompenses, pénalités et agrégation multi-scénarios.

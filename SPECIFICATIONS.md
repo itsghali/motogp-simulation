@@ -100,7 +100,7 @@ Vehicle.update()
 
 Une seule mise à jour locomotion par pas. `vehicle.js` reste intact.
 
-En Grand Prix, aides optionnelles ajoutent des forces indépendantes : séparation, anticipation de collision et évitement obstacle. Composition respecte priorité du danger et limite force finale.
+En Grand Prix, aides optionnelles ajoutent des forces indépendantes : séparation, anticipation de collision et évitement obstacle. Les primitives de séparation et d'évitement sont adaptées respectivement de `5-3-PathFollowingComplex/motorcycleSteering.js` et `5-3-PathFollowingComplex/vehicleAvoidance.js`. Elles restent indépendantes du réseau neuronal et de l'algorithme génétique. Composition respecte priorité du danger et limite force finale.
 
 ## 7. Algorithme génétique
 
@@ -189,9 +189,11 @@ Physique de course commune dans `grand-prix-rules.js`, notamment vitesse maximal
 
 ### 12.3 Séparation
 
-Répulsion projetée dans repère de piste. Composante latérale écarte motos ; rapprochement longitudinal provoque freinage plutôt que marche arrière. Vitesse relative et temps avant contact permettent anticipation.
+Algorithme adapté de `5-3-PathFollowingComplex/motorcycleSteering.js`. Répulsion projetée dans repère de piste. Composante latérale écarte motos ; rapprochement longitudinal provoque freinage plutôt que marche arrière. Vitesse relative, distance de suivi (`headway`) et temps avant contact permettent anticipation.
 
 ### 12.4 Évitement
+
+Algorithme adapté de `5-3-PathFollowingComplex/vehicleAvoidance.js`, puis étendu pour les obstacles et dimensions du Grand Prix :
 
 - détection anticipée par projection future ;
 - portée dynamique liée vitesse ;
