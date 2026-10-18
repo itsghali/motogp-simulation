@@ -100,7 +100,7 @@ Vehicle.update()
 
 Une seule mise à jour locomotion par pas. `vehicle.js` reste intact.
 
-En Grand Prix, aides optionnelles ajoutent des forces indépendantes : séparation, anticipation de collision et évitement obstacle. Les primitives de séparation et d'évitement sont adaptées respectivement de `5-3-PathFollowingComplex/motorcycleSteering.js` et `5-3-PathFollowingComplex/vehicleAvoidance.js`. Elles restent indépendantes du réseau neuronal et de l'algorithme génétique. Composition respecte priorité du danger et limite force finale.
+En Grand Prix, aides optionnelles ajoutent des forces indépendantes : séparation, anticipation de collision et évitement obstacle. Elles restent indépendantes du réseau neuronal et de l'algorithme génétique. La composition donne priorité au danger et limite la force finale.
 
 ## 7. Algorithme génétique
 
@@ -189,11 +189,11 @@ Physique de course commune dans `grand-prix-rules.js`, notamment vitesse maximal
 
 ### 12.3 Séparation
 
-Algorithme adapté de `5-3-PathFollowingComplex/motorcycleSteering.js`. Répulsion projetée dans repère de piste. Composante latérale écarte motos ; rapprochement longitudinal provoque freinage plutôt que marche arrière. Vitesse relative, distance de suivi (`headway`) et temps avant contact permettent anticipation.
+Chaque moto filtre les voisines dans son rayon de perception, puis calcule leur position et leur vitesse relatives. Une répulsion inversement proportionnelle à la distance crée une marge entre les corps. Dans le repère local de la piste, la composante latérale écarte les motos ; une menace située devant produit surtout un freinage longitudinal, jamais une marche arrière. La distance de suivi (`headway`) augmente avec la vitesse. Le temps avant contact permet d'agir avant le chevauchement.
 
 ### 12.4 Évitement
 
-Algorithme adapté de `5-3-PathFollowingComplex/vehicleAvoidance.js`, puis étendu pour les obstacles et dimensions du Grand Prix :
+L'algorithme projette deux sondes devant la moto et contrôle aussi le corridor continu entre sa position et leur extrémité. Son fonctionnement :
 
 - détection anticipée par projection future ;
 - portée dynamique liée vitesse ;

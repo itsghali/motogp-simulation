@@ -13,13 +13,13 @@ Documentation académique : [spécifications complètes](SPECIFICATIONS.md) et [
 
 ## Algorithmes utilisés
 
-| Algorithme | Rôle | Origine |
-|---|---|---|
-| Algorithme génétique + réseau neuronal 9-12-2 | Faire évoluer les cerveaux selon progression, checkpoints, tours et pénalités | Contrôleur d'apprentissage de MotoGP Simulation |
-| Évitement d'obstacles | Anticiper avec des sondes futures, choisir un côté, contourner et freiner si nécessaire | Adapté de `5-3-PathFollowingComplex/vehicleAvoidance.js` |
-| Séparation / anticollision | Maintenir une distance entre motos, anticiper le contact et gérer la distance de suivi | Adapté de `5-3-PathFollowingComplex/motorcycleSteering.js` |
+| Algorithme | Fonctionnement |
+|---|---|
+| Algorithme génétique + réseau neuronal 9-12-2 | Chaque moto transforme neuf entrées en direction et accélération. Les meilleurs génomes sont sélectionnés, croisés et mutés selon leur progression, leurs checkpoints, leurs tours et leurs pénalités. |
+| Évitement d'obstacles | Des sondes projettent la position future de la moto. En cas de danger, le contrôleur choisit un côté libre, conserve ce choix pendant le contournement et freine si la distance disponible devient insuffisante. |
+| Séparation / anticollision | La moto repère les voisines proches, mesure distance et vitesse relative, puis applique une répulsion latérale ou un freinage longitudinal pour conserver une distance de suivi et anticiper un contact. |
 
-Les deux comportements réactifs proviennent donc de l'exemple pédagogique **`5-3-PathFollowingComplex`**. Ils ont été adaptés au circuit, aux dimensions complètes des motos et au mode Grand Prix. Ils restent séparés du génome et de l'entraînement génétique : `reference-steering.js` contient leurs primitives, puis `race-steering.js` et `motorcycle-avoidance.js` composent les forces. La force finale reste limitée à `maxForce` et la locomotion reste déléguée à `Vehicle`.
+L'évitement et la séparation sont des aides réactives activables en Grand Prix. Ils restent séparés du génome et de l'entraînement génétique : `reference-steering.js` calcule leurs forces, puis `race-steering.js` et `motorcycle-avoidance.js` les composent avec la commande neuronale. Le danger est prioritaire, la force finale reste limitée à `maxForce` et la locomotion reste déléguée à `Vehicle`.
 
 L'inférence neuronale de toute la population est batchée avec TensorFlow.js. Le navigateur demande WebGL haute performance et identifie la RTX 3070 comme configuration optimale. Un autre GPU WebGL reste accepté pour la démonstration publique ; sans WebGL, TensorFlow.js passe au CPU. p5.js, les capteurs géométriques, le GA, l'interface et l'orchestration restent exécutés sur le CPU.
 
@@ -47,7 +47,7 @@ Le contour est une simplification normalisée à 42 points du plan public, sans 
 - `venue.js`, `replay-motorcycle.js` : décor et reconstruction visuelle, héritant de `Vehicle`.
 - `genome.js` : réseau dense léger et sept traits de conduite.
 - `steering.js` : décision et force Reynolds limitée.
-- `reference-steering.js` : évitement et séparation adaptés de `5-3-PathFollowingComplex`.
+- `reference-steering.js` : calcul des forces d'évitement et de séparation.
 - `race-steering.js`, `motorcycle-avoidance.js` : composition des aides réactives du Grand Prix.
 - `gpu-inference.js` : tenseurs persistants et inférence batchée GPU WebGL.
 - `genetic-algorithm.js` : tournoi, élitisme, croisement, mutation.

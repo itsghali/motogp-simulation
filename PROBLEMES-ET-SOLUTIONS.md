@@ -122,7 +122,7 @@ Répulsion euclidienne naïve pouvait contenir composante arrière. Sur grille s
 - Utiliser vitesse relative et temps avant contact.
 - Limiter force finale.
 
-Correction de séparation/anticollision adaptée de `5-3-PathFollowingComplex/motorcycleSteering.js` aux conventions `maxspeed/maxforce` du projet.
+Correction : séparation latérale, freinage longitudinal selon la distance de suivi, anticipation par vitesse relative et force finale limitée à `maxforce`.
 
 ## 10. Obstacles non évités
 
@@ -132,7 +132,7 @@ Force neuronale pouvait rester dominante ou évitement réagir trop tard. Côté
 
 ### Solution
 
-Évitement adapté de `5-3-PathFollowingComplex/vehicleAvoidance.js`, puis renforcé pour la course :
+Évitement fondé sur la projection future de la moto, puis renforcé pour la course :
 
 - Danger urgent prioritaire.
 - Portée dynamique selon vitesse.

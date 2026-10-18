@@ -33,7 +33,7 @@ Modifications de présentation et d'interaction uniquement. Aucune modification 
 
 ## Anticollision commune — 17 octobre 2026
 
-Cette section remplace les descriptions historiques de poussée latérale des correctifs 4/5 et de l'adaptation 5-3 ci-dessous. Aucun traitement par profil, poids neuronal ou nom de modèle.
+Cette section remplace les descriptions historiques de poussée latérale des correctifs précédents. Aucun traitement par profil, poids neuronal ou nom de modèle.
 
 - Grille : placement initial ajusté par pas de 2 px jusqu'à conserver au moins 4 px entre capsules entières. Pas de déplacement correctif pendant la course.
 - Priorité : position locale actuelle projetée sur la piste, bouclage des tours compris ; égalité départagée par identifiant. Le rang figé avant départ et le nombre de tours d'avance ne décident plus seuls. Hors chaussée, repli géométrique selon le cap.
@@ -41,7 +41,7 @@ Cette section remplace les descriptions historiques de poussée latérale des co
 - Virage : vitesse suivante atteignable dans `maxforce`, correction de courbure selon la vitesse physique demandée par le cerveau après ralentissement, sans lire son génome. Garde du balayage de la roue arrière contre les voisins ; pas seulement un test du centre.
 - Interaction obstacles/trafic : pendant un passage proche, freinage de la composante dirigée vers un mur, composante tangentielle préservée. Désactivé lorsque l'une des deux aides est coupée. La restitution du pilotage vérifie aussi le vrai prochain pas : déplacement avec vitesse courante, puis changement de vitesse/cap, comme `Vehicle.update`.
 
-Forces bornées, `applyForce` et locomotion héritée uniques. Neuf entrées neuronales, JSON, apprentissage, règles d'abandon, sources 5-3/6 et `vehicle.js` inchangés. Ressources modifiées versionnées pour éviter un mélange navigateur ancien/nouveau.
+Forces bornées, `applyForce` et locomotion héritée uniques. Neuf entrées neuronales, JSON, apprentissage, règles d'abandon et `vehicle.js` inchangés. Ressources modifiées versionnées pour éviter un mélange navigateur ancien/nouveau.
 
 Preuves reproductibles : `npm test`, `npm run audit:traffic`, `npm run validate:seed`. `tests/traffic-general.test.cjs` couvre les cinq cerveaux GP52, cinq rotations de grille mixte, homologation réelle et scénario utilisateur avec cinq obstacles, avec/sans variantes style 30 % et douze drones. L'audit trafic distingue explicitement contacts moto–moto et abandons contre les obstacles : zéro contact ne signifie pas six arrivées. Des échecs d'évitement statique restent présents avec d'autres cerveaux ; aucune certification universelle des obstacles ni du rendu navigateur/GPU.
 
@@ -233,14 +233,12 @@ Régression : l’ancienne version heurtait un obstacle de rayon 10 à 5,5 px/pa
 
 Limites : une obstruction trop large ou un obstacle découvert à l’intérieur d’une distance physiquement infranchissable ne peut pas être évité par une force bornée. Les modèles appris peuvent mal récupérer après une forte déviation dans un virage : un essai CPU avec obstacle à 160 px du départ finit encore en mauvais sens après le contournement ; essais à 70 et 300 px terminés. Le protocole de checkpoints/validation est conservé ; aucun abandon masqué pour obtenir un résultat favorable.
 
-## Transposition explicite de 5-3 vers 9 — 17 octobre 2026
-
-`reference-steering.js` adapte les principes de `5-3-PathFollowingComplex/vehicleAvoidance.js` et `motorcycleSteering.js`, sans importer leurs entités, variables globales ou suivi de chemin.
+## Fonctionnement de l'évitement et de la séparation — 17 octobre 2026
 
 - Anticipation obstacles : sondes `ahead` et `ahead2`, à portée complète et mi-portée. Un corridor continu garde les petits obstacles entre sondes détectables. Portée agrandie selon vitesse et distance de freinage ; côté de passage mémorisé et contrôle de chaussée conservés.
 - Anticollision motos : séparation inverse-distance et rampe de suivi `headway`. Dégagement mesuré entre corps complets, vitesse du leader prise en compte ; freinage uniquement, aucune accélération ajoutée. Perception limitée aux menaces prédictives ou corps très proches pour ne pas freiner inutilement dans les virages. Écartement projeté sur normale locale et borné selon place disponible et rotation du corps.
 
-Composition dans `race-steering.js` et `motorcycle-avoidance.js`, force finale bornée à `maxforce`, déplacement unique par locomotion héritée. Options existantes indépendantes : **Évitement** pour obstacles ajoutés, **Anticollision motos** pour trafic ; désactivation ou intensité zéro conserve la commande neuronale. Aucune modification des JSON, de l’entraînement, de 5-3, de 6 ou de `vehicle.js`. Pas de trajectoire imposée ni garantie zéro contact ; blocages et stagnations restent possibles.
+Composition dans `race-steering.js` et `motorcycle-avoidance.js`, force finale bornée à `maxforce`, déplacement unique par locomotion héritée. Options indépendantes : **Évitement** pour obstacles ajoutés, **Anticollision motos** pour trafic ; désactivation ou intensité zéro conserve exactement la commande neuronale. Aucune modification des JSON, de l’entraînement ou de `vehicle.js`. Pas de trajectoire imposée ni garantie zéro contact ; blocages et stagnations restent possibles.
 
 Tests ciblés : `node --test tests/reference-steering.test.cjs tests/motorcycle-avoidance.test.cjs tests/race-assistance.test.cjs tests/race-track-frame.test.cjs` — 33 tests réussis, dont locomotion réelle, suivi, écartement, obstacles, désactivation et grille trois tours sans contresens.
 
