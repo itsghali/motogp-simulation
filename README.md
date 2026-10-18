@@ -5,6 +5,7 @@ Simulation p5.js combinant trois approches : **algorithme génétique**, **évit
 ## Démonstration
 
 - [Jouer en ligne](https://itsghali.github.io/motogp-simulation/)
+- [Voir la vidéo de démonstration](https://youtu.be/WALYf7b9y7I)
 - [Code source](https://github.com/itsghali/motogp-simulation)
 
 ![MotoGP Simulation en mode entraînement sur le tracé de Jerez](docs/motogp-simulation.png)
