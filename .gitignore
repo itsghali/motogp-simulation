@@ -2,3 +2,6 @@ node_modules/
 .DS_Store
 assets/motogp_audio.mp3
 *- Copy.json
+AI-CHANGELOG.md
+AUDIT-2026-10-16.md
+SPRINTS.md
